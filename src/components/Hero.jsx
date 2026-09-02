@@ -73,14 +73,17 @@ export default function Hero() {
           <span>JAVA FULL STACK DEVELOPER</span>
         </motion.div>
 
-        {/* 1. MAIN CENTERED HEADLINE */}
+        {/* 1. MAIN CENTERED HEADLINE WITH VIBRANT PINK-BLUE GRADIENT */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight"
         >
-          Hi, I'm <span className="bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">Harsh Singh</span>
+          Hi, I'm{' '}
+          <span className="bg-gradient-to-r from-[#FF5E97] via-[#D946EF] via-[#818CF8] to-[#38BDF8] bg-clip-text text-transparent font-black tracking-tight filter drop-shadow-[0_0_30px_rgba(217,70,239,0.35)]">
+            Harsh Singh
+          </span>
         </motion.h1>
 
         {/* 2. DYNAMIC UPWARD SLIDING REEL (Centered) */}
@@ -154,7 +157,7 @@ export default function Hero() {
           </motion.a>
         </motion.div>
 
-        {/* 5. CENTERED PORTRAIT WITH ROTATING CIRCULAR PLATFORM (Original Circular Design) */}
+        {/* 5. CENTERED PORTRAIT WITH ROTATING CIRCULAR PLATFORM */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
