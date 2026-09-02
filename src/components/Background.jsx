@@ -114,33 +114,7 @@ export default function Background() {
           />
         </motion.div>
 
-        {/* 2. REAL 3D EARTH (Middle Left Deep Space with Soft Depth-of-Field) */}
-        <motion.div
-          animate={{
-            y: [0, 18, 0],
-            x: [0, -14, 0],
-            rotate: [0, -6, 0],
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 1,
-          }}
-          className="absolute top-[32%] left-[3%] sm:left-[6%] w-[180px] sm:w-[250px] h-[180px] sm:h-[250px] pointer-events-none opacity-40 select-none filter blur-[1.2px]"
-          style={{
-            maskImage: 'radial-gradient(circle at 50% 50%, black 68%, transparent 95%)',
-            WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 68%, transparent 95%)',
-          }}
-        >
-          <img
-            src="/earth.jpg"
-            alt="Real 3D Earth Planet"
-            className="w-full h-full object-contain mix-blend-screen"
-          />
-        </motion.div>
-
-        {/* 3. REAL 3D MARS (Lower Right Deep Space with Soft Depth-of-Field) */}
+        {/* 2. REAL 3D MARS (Lower Right Deep Space with Soft Depth-of-Field) */}
         <motion.div
           animate={{
             y: [0, -14, 0],
@@ -167,7 +141,7 @@ export default function Background() {
         </motion.div>
       </motion.div>
 
-      {/* 4. IN-PLACE FLOATING 3D GLASS CUBES (Sharp Crisp Foreground Layer) */}
+      {/* 3. IN-PLACE FLOATING 3D GLASS CUBES (Sharp Crisp Foreground Layer) */}
       <motion.div
         animate={
           shouldReduceMotion
@@ -211,7 +185,7 @@ export default function Background() {
         ))}
       </motion.div>
 
-      {/* 5. SUBTLE HIGH-CONTRAST TECH GRID */}
+      {/* 4. SUBTLE HIGH-CONTRAST TECH GRID */}
       <div
         className="absolute inset-0 opacity-[0.02] pointer-events-none"
         style={{
@@ -220,7 +194,7 @@ export default function Background() {
         }}
       />
 
-      {/* 6. VIGNETTE OVERLAY (Ensures Frontend UI text & cards remain primary focus) */}
+      {/* 5. VIGNETTE OVERLAY (Ensures Frontend UI text & cards remain primary focus) */}
       <div className="absolute inset-0 bg-radial from-transparent via-[#000000]/40 to-[#000000]/85 pointer-events-none" />
 
     </div>
