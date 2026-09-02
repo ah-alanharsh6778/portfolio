@@ -142,7 +142,7 @@ const categories = [
   { id: 'cloud', label: 'AWS Cloud' }
 ];
 
-// Interactive 3D Card Component with Staggered 3D Burst Entrance
+// Interactive 3D Card Component with 3D Tilt & Specular Light Glare
 function Skill3DCard({ skill, index }) {
   const cardRef = useRef(null);
 
@@ -179,47 +179,17 @@ function Skill3DCard({ skill, index }) {
 
   return (
     <motion.div
-      layout
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      // Dramatic 3D Burst / Pop-in entrance from depth one by one
-      initial={{
-        opacity: 0,
-        scale: 0.25,
-        y: 90,
-        rotateX: 35,
-        rotateY: index % 2 === 0 ? -20 : 20,
-      }}
-      whileInView={{
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        rotateX: 0,
-        rotateY: 0,
-      }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{
-        type: "spring",
-        stiffness: 160,
-        damping: 14,
-        mass: 0.7,
-        delay: index * 0.12,
-      }}
-      exit={{
-        opacity: 0,
-        scale: 0.3,
-        y: 40,
-        transition: { duration: 0.25 }
-      }}
       style={{
         rotateX,
         rotateY,
         transformStyle: 'preserve-3d',
         perspective: '1200px'
       }}
-      whileHover={{ scale: 1.05, zIndex: 30 }}
-      className="group relative rounded-3xl bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 backdrop-blur-2xl border border-white/10 hover:border-teal-500/60 p-6 shadow-[0_15px_40px_rgba(0,0,0,0.55)] hover:shadow-[0_20px_55px_rgba(20,184,166,0.25)] transition-colors duration-300 flex flex-col justify-between cursor-pointer select-none overflow-hidden"
+      whileHover={{ scale: 1.05, y: -4, zIndex: 30 }}
+      className="group relative w-[280px] sm:w-[310px] flex-shrink-0 rounded-3xl bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 backdrop-blur-2xl border border-white/10 hover:border-teal-500/60 p-6 shadow-[0_15px_40px_rgba(0,0,0,0.55)] hover:shadow-[0_20px_55px_rgba(20,184,166,0.25)] transition-colors duration-300 flex flex-col justify-between cursor-pointer select-none overflow-hidden"
     >
       {/* 3D Specular Light Glare Sweep */}
       <motion.div
@@ -300,13 +270,17 @@ function Skill3DCard({ skill, index }) {
 
 export default function Skills() {
   const [activeTab, setActiveTab] = useState('all');
+  const [isHovered, setIsHovered] = useState(false);
 
   const filteredSkills = activeTab === 'all'
     ? allSkills
     : allSkills.filter(s => s.category === activeTab);
 
+  // Quadruple skills array to create a completely seamless infinite continuous loop
+  const marqueeSkills = [...filteredSkills, ...filteredSkills, ...filteredSkills, ...filteredSkills];
+
   return (
-    <section id="skills" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto relative z-10 select-none">
+    <section id="skills" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto relative z-10 select-none overflow-hidden">
       
       {/* 3D Ambient Background Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-teal-500/10 rounded-full blur-[160px] pointer-events-none" />
@@ -396,17 +370,36 @@ export default function Skills() {
         ))}
       </div>
 
-      {/* DESKTOP & TABLET: 3D Perspective Glassmorphism Grid with Staggered Pop-In */}
-      <motion.div
-        layout
-        className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 perspective-1200"
+      {/* DESKTOP & TABLET: Smooth Continuous Right-to-Left Dynamic Motion Carousel */}
+      <div
+        className="hidden sm:block relative w-full overflow-hidden py-4 perspective-1200"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <AnimatePresence mode="popLayout">
-          {filteredSkills.map((skill, index) => (
-            <Skill3DCard key={skill.name} skill={skill} index={index} />
+        {/* Left & Right Smooth Edge Fade Masks */}
+        <div className="absolute left-0 inset-y-0 w-24 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 inset-y-0 w-24 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
+
+        {/* Continuous Right-to-Left Infinite Sliding Track */}
+        <motion.div
+          className="flex gap-6 w-max"
+          animate={{
+            x: isHovered ? undefined : ['0%', '-50%'],
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: 'loop',
+              duration: 28,
+              ease: 'linear',
+            },
+          }}
+        >
+          {marqueeSkills.map((skill, index) => (
+            <Skill3DCard key={`${skill.name}-${index}`} skill={skill} index={index} />
           ))}
-        </AnimatePresence>
-      </motion.div>
+        </motion.div>
+      </div>
 
     </section>
   );
