@@ -19,7 +19,7 @@ export default function Background() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [shouldReduceMotion]);
 
-  // In-Place Floating 3D Glass Cubes placed at strategic perimeter positions
+  // In-Place Floating 3D Glass Cubes (Right-side upper cube removed for a clean right backdrop)
   const cubes = [
     {
       size: 'w-18 h-18 sm:w-26 sm:h-26',
@@ -32,16 +32,6 @@ export default function Background() {
       delay: 0,
     },
     {
-      size: 'w-22 h-22 sm:w-32 sm:h-32',
-      top: '20%',
-      right: '8%',
-      rotX: -20,
-      rotY: 40,
-      rotZ: -15,
-      duration: 8.5,
-      delay: 0.8,
-    },
-    {
       size: 'w-16 h-16 sm:w-22 sm:h-22',
       top: '64%',
       left: '7%',
@@ -50,16 +40,6 @@ export default function Background() {
       rotZ: 12,
       duration: 6.5,
       delay: 1.5,
-    },
-    {
-      size: 'w-20 h-20 sm:w-28 sm:h-28',
-      top: '74%',
-      right: '6%',
-      rotX: -25,
-      rotY: 30,
-      rotZ: -8,
-      duration: 9,
-      delay: 0.4,
     },
     {
       size: 'w-14 h-14 sm:w-18 sm:h-18',
