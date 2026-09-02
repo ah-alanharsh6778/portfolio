@@ -10,32 +10,32 @@ import Footer from './components/Footer';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#0B1121] text-slate-100 font-sans selection:bg-teal-500/30 selection:text-teal-200 relative overflow-x-hidden">
-      {/* Animated Fixed Background (Deep Slate #0B1121, Ambient Teal Glows, Floating Cubes) */}
+    <div className="min-h-screen bg-[#000000] text-slate-100 font-sans selection:bg-teal-500/30 selection:text-teal-200 relative overflow-x-hidden">
+      {/* Deep Pure Black Real Planet Space Background */}
       <Background />
 
       {/* 1. Navbar */}
       <Navbar />
 
-      {/* Main Content */}
+      {/* Main Content - Seamless Cosmic Flow */}
       <main className="relative z-10">
-        {/* 2. Hero Section (Centered Architecture Layout, Sliding Ticker, Resume Download) */}
+        {/* 2. Hero Section */}
         <Hero />
 
-        {/* 3. Skills Bento Box (Technical Arsenal & Category Filters) */}
+        {/* 3. Skills Bento Section */}
         <Skills />
 
-        {/* 4. Featured Projects Section (Agrinexus, CareerSneaker, FlowSpace, CloudBillBox) */}
+        {/* 4. Featured Projects Section */}
         <Projects />
 
-        {/* 5. Expansive About Me Section (B.Tech CSE, Scale Highlights & Technical Pillars) */}
+        {/* 5. Expansive About Me Section */}
         <About />
 
-        {/* 6. Cinematic Contact Section (Avatar, Online Beacon, Drop me an Email) */}
+        {/* 6. Cinematic Contact Section */}
         <Contact />
       </main>
 
-      {/* 7. Connected Footer (LinkedIn, GitHub, Phone Call, Direct Email, Back to top) */}
+      {/* 7. Connected Footer */}
       <Footer />
     </div>
   );

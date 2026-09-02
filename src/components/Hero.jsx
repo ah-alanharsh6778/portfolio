@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Link as ScrollLink } from 'react-scroll';
-import { ArrowUpRight, Download, Sparkles, Code2, Zap, Server, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, Download, Sparkles, Zap, ShieldCheck } from 'lucide-react';
 import heroAsset from '../assets/hero.png';
 
 function GithubIcon({ className = "w-4 h-4" }) {
@@ -57,14 +57,10 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[92vh] sm:min-h-screen w-full flex flex-col items-center justify-center pt-28 sm:pt-32 pb-16 px-4 sm:px-6 lg:px-12 overflow-hidden select-none"
+      className="relative min-h-[94vh] sm:min-h-screen w-full flex flex-col items-center justify-center pt-28 sm:pt-32 pb-16 px-4 sm:px-6 lg:px-12 overflow-hidden select-none"
     >
-      {/* Central Ambient Background Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-teal-500/10 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[350px] bg-indigo-500/10 rounded-full blur-[160px] pointer-events-none" />
-
-      {/* Main Container - Centered Architecture Layout */}
-      <div className="max-w-4xl mx-auto w-full flex flex-col items-center text-center z-10">
+      {/* Clean, Deep Dark Space Base */}
+      <div className="max-w-4xl mx-auto w-full flex flex-col items-center text-center z-10 relative">
         
         {/* Top Eyebrow Tag */}
         <motion.div
@@ -158,7 +154,7 @@ export default function Hero() {
           </motion.a>
         </motion.div>
 
-        {/* 5. CENTERED PORTRAIT VISUAL WITH GLOWING CONCENTRIC RINGS */}
+        {/* 5. CENTERED PORTRAIT WITH ROTATING CIRCULAR PLATFORM (Original Circular Design) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -174,10 +170,7 @@ export default function Hero() {
           }
           className="mt-12 relative w-full max-w-[320px] sm:max-w-[360px] flex items-center justify-center"
         >
-          {/* Ambient Circular Glow */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/20 via-indigo-600/15 to-emerald-500/15 rounded-full blur-3xl opacity-80 pointer-events-none scale-110" />
-
-          {/* Glowing Circular Platform */}
+          {/* Glowing Rotating Circular Platform */}
           <motion.div
             animate={
               shouldReduceMotion
@@ -191,11 +184,10 @@ export default function Hero() {
               repeat: Infinity,
               ease: 'linear',
             }}
-            className="relative w-[240px] sm:w-[280px] h-[240px] sm:h-[280px] rounded-full bg-gradient-to-br from-teal-950/80 via-slate-900 to-slate-950 border border-teal-500/30 shadow-[0_0_50px_rgba(20,184,166,0.2)] backdrop-blur-xl flex items-center justify-center overflow-hidden"
+            className="relative w-[240px] sm:w-[280px] h-[240px] sm:h-[280px] rounded-full bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-teal-500/30 shadow-[0_0_40px_rgba(20,184,166,0.15)] flex items-center justify-center overflow-hidden"
           >
             <div className="absolute inset-3 rounded-full border border-dashed border-teal-500/20" />
             <div className="absolute inset-8 rounded-full border border-white/5" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(20,184,166,0.2),transparent_70%)]" />
           </motion.div>
 
           {/* Portrait Image */}
@@ -204,9 +196,9 @@ export default function Hero() {
               <img
                 src={heroAsset}
                 alt="Harsh Singh - Java Full Stack Developer"
-                className="w-full h-full object-contain object-bottom drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] select-none pointer-events-auto"
+                className="w-full h-full object-contain object-bottom drop-shadow-[0_20px_35px_rgba(0,0,0,0.9)] select-none pointer-events-auto"
               />
-              <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-[#0B1121] to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-black to-transparent pointer-events-none" />
             </div>
           </div>
 

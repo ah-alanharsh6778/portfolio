@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
 
 const allSkills = [
@@ -11,7 +11,7 @@ const allSkills = [
     category: "backend",
     categoryLabel: "Core Backend",
     color: "#f89820",
-    glowColor: "rgba(248, 152, 32, 0.25)",
+    glowColor: "rgba(248, 152, 32, 0.3)",
     level: "Advanced Architecture",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -26,7 +26,7 @@ const allSkills = [
     category: "backend",
     categoryLabel: "Microservices",
     color: "#6db33f",
-    glowColor: "rgba(109, 179, 63, 0.25)",
+    glowColor: "rgba(109, 179, 63, 0.3)",
     level: "REST APIs & MVC",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -41,7 +41,7 @@ const allSkills = [
     category: "backend",
     categoryLabel: "Architecture",
     color: "#38bdf8",
-    glowColor: "rgba(56, 189, 248, 0.25)",
+    glowColor: "rgba(56, 189, 248, 0.3)",
     level: "Event Driven & REST",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -62,7 +62,7 @@ const allSkills = [
     category: "frontend",
     categoryLabel: "Client Engine",
     color: "#61dafb",
-    glowColor: "rgba(97, 218, 251, 0.25)",
+    glowColor: "rgba(97, 218, 251, 0.3)",
     level: "State & Components",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -77,7 +77,7 @@ const allSkills = [
     category: "frontend",
     categoryLabel: "Core Web",
     color: "#f7df1e",
-    glowColor: "rgba(247, 223, 30, 0.25)",
+    glowColor: "rgba(247, 223, 30, 0.3)",
     level: "Async / DOM Logic",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -94,7 +94,7 @@ const allSkills = [
     category: "database",
     categoryLabel: "Database",
     color: "#00758f",
-    glowColor: "rgba(0, 117, 143, 0.25)",
+    glowColor: "rgba(0, 117, 143, 0.3)",
     level: "Schema & Indices",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -109,7 +109,7 @@ const allSkills = [
     category: "database",
     categoryLabel: "High Speed Cache",
     color: "#dc382d",
-    glowColor: "rgba(220, 56, 45, 0.25)",
+    glowColor: "rgba(220, 56, 45, 0.3)",
     level: "Microsecond Latency",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -124,7 +124,7 @@ const allSkills = [
     category: "cloud",
     categoryLabel: "Cloud Computing",
     color: "#ff9900",
-    glowColor: "rgba(255, 153, 0, 0.25)",
+    glowColor: "rgba(255, 153, 0, 0.3)",
     level: "Deployment & Assets",
     icon: (
       <svg className="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -142,6 +142,162 @@ const categories = [
   { id: 'cloud', label: 'AWS Cloud' }
 ];
 
+// Interactive 3D Card Component with Staggered 3D Burst Entrance
+function Skill3DCard({ skill, index }) {
+  const cardRef = useRef(null);
+
+  // Motion values for smooth 3D tilt
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Physics springs for damping
+  const springConfig = { damping: 22, stiffness: 240, mass: 0.6 };
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [14, -14]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-14, 14]), springConfig);
+
+  // Specular light glare coordinates
+  const glareX = useSpring(useTransform(mouseX, [-0.5, 0.5], [0, 100]), springConfig);
+  const glareY = useSpring(useTransform(mouseY, [-0.5, 0.5], [0, 100]), springConfig);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    const xPct = (e.clientX - rect.left) / width - 0.5;
+    const yPct = (e.clientY - rect.top) / height - 0.5;
+
+    mouseX.set(xPct);
+    mouseY.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  return (
+    <motion.div
+      layout
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      // Dramatic 3D Burst / Pop-in entrance from depth one by one
+      initial={{
+        opacity: 0,
+        scale: 0.25,
+        y: 90,
+        rotateX: 35,
+        rotateY: index % 2 === 0 ? -20 : 20,
+      }}
+      whileInView={{
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        rotateX: 0,
+        rotateY: 0,
+      }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{
+        type: "spring",
+        stiffness: 160,
+        damping: 14,
+        mass: 0.7,
+        delay: index * 0.12,
+      }}
+      exit={{
+        opacity: 0,
+        scale: 0.3,
+        y: 40,
+        transition: { duration: 0.25 }
+      }}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: 'preserve-3d',
+        perspective: '1200px'
+      }}
+      whileHover={{ scale: 1.05, zIndex: 30 }}
+      className="group relative rounded-3xl bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 backdrop-blur-2xl border border-white/10 hover:border-teal-500/60 p-6 shadow-[0_15px_40px_rgba(0,0,0,0.55)] hover:shadow-[0_20px_55px_rgba(20,184,166,0.25)] transition-colors duration-300 flex flex-col justify-between cursor-pointer select-none overflow-hidden"
+    >
+      {/* 3D Specular Light Glare Sweep */}
+      <motion.div
+        className="absolute -inset-[100%] pointer-events-none rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(circle 260px at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.18), transparent 70%)`,
+        }}
+      />
+
+      {/* Brand Color Ambient Glow */}
+      <div
+        className="absolute -inset-4 rounded-3xl blur-2xl opacity-0 group-hover:opacity-85 transition-opacity duration-500 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, ${skill.glowColor}, transparent 70%)`
+        }}
+      />
+
+      {/* CARD TOP LAYER: Elevated in 3D Space (translateZ 40px) */}
+      <div
+        className="relative z-10"
+        style={{ transform: 'translateZ(40px)', transformStyle: 'preserve-3d' }}
+      >
+        <div className="flex items-center justify-between mb-5">
+          {/* Floating 3D Icon Container */}
+          <div
+            className="p-3 rounded-2xl bg-slate-950/90 border border-white/10 group-hover:border-white/30 transition-all duration-300 shadow-xl group-hover:scale-110 flex items-center justify-center"
+            style={{
+              color: skill.color,
+              boxShadow: `0 8px 25px -4px ${skill.glowColor}`,
+              transform: 'translateZ(25px)'
+            }}
+          >
+            {skill.icon}
+          </div>
+
+          {/* 3D Elevated Version Badge */}
+          <span
+            className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[10px] font-mono text-slate-300 group-hover:text-teal-300 group-hover:border-teal-500/40 group-hover:bg-teal-500/10 transition-all"
+            style={{ transform: 'translateZ(20px)' }}
+          >
+            {skill.version}
+          </span>
+        </div>
+
+        {/* Skill Title & Category */}
+        <h3
+          className="text-xl font-bold text-white tracking-tight group-hover:text-teal-300 transition-colors"
+          style={{ transform: 'translateZ(20px)' }}
+        >
+          {skill.name}
+        </h3>
+
+        <p
+          className="text-xs font-mono text-slate-400 mt-1"
+          style={{ transform: 'translateZ(15px)' }}
+        >
+          {skill.categoryLabel}
+        </p>
+      </div>
+
+      {/* CARD BOTTOM LAYER: Elevated Proficiency Bar (translateZ 25px) */}
+      <div
+        className="mt-6 pt-4 border-t border-white/10 relative z-10 flex items-center justify-between text-xs font-mono"
+        style={{ transform: 'translateZ(25px)' }}
+      >
+        <div className="flex items-center gap-1.5 text-slate-300">
+          <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(20,184,166,0.8)]" />
+          <span className="text-[11px] text-slate-200">{skill.level}</span>
+        </div>
+
+        <div className="flex items-center gap-1 text-teal-400 opacity-60 group-hover:opacity-100 transition-opacity">
+          <CheckCircle2 className="w-3.5 h-3.5" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Skills() {
   const [activeTab, setActiveTab] = useState('all');
 
@@ -152,17 +308,17 @@ export default function Skills() {
   return (
     <section id="skills" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto relative z-10 select-none">
       
-      {/* Background ambient lighting */}
+      {/* 3D Ambient Background Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-teal-500/10 rounded-full blur-[160px] pointer-events-none" />
 
       {/* Section Header */}
-      <div className="text-center mb-10 sm:mb-16">
+      <div className="text-center mb-10 sm:mb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-teal-500/30 text-xs font-mono text-teal-400 mb-4 shadow-[0_0_15px_rgba(20,184,166,0.15)] backdrop-blur-md"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-teal-500/30 text-xs font-mono text-teal-400 mb-4 shadow-[0_0_15px_rgba(20,184,166,0.15)] backdrop-blur-md"
         >
           <Sparkles className="w-3.5 h-3.5 animate-pulse" />
           <span>// Technical Arsenal</span>
@@ -188,7 +344,7 @@ export default function Skills() {
           Core enterprise backend frameworks, modern client libraries, and distributed database infrastructure.
         </motion.p>
 
-        {/* Desktop Filter Pills */}
+        {/* 3D Filter Pills */}
         <div className="hidden sm:flex mt-8 flex-wrap items-center justify-center gap-2 sm:gap-3">
           {categories.map((cat) => (
             <button
@@ -206,15 +362,20 @@ export default function Skills() {
         </div>
       </div>
 
-      {/* MOBILE ONLY: Compact 2-Column Icon Symbol Badges */}
-      <div className="grid grid-cols-2 gap-3 sm:hidden">
+      {/* MOBILE ONLY: 2-Column Grid with Staggered 3D Burst */}
+      <div className="grid grid-cols-2 gap-3 sm:hidden perspective-1000">
         {allSkills.map((skill, index) => (
           <motion.div
             key={skill.name}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.4, y: 40 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: index * 0.05 }}
+            transition={{
+              type: "spring",
+              stiffness: 180,
+              damping: 14,
+              delay: index * 0.08
+            }}
             className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-xl flex items-center gap-3 shadow-md"
           >
             <div
@@ -235,63 +396,14 @@ export default function Skills() {
         ))}
       </div>
 
-      {/* DESKTOP & TABLET: Modern 3D Bento Glassmorphism Grid */}
+      {/* DESKTOP & TABLET: 3D Perspective Glassmorphism Grid with Staggered Pop-In */}
       <motion.div
         layout
-        className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
+        className="hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 perspective-1200"
       >
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {filteredSkills.map((skill, index) => (
-            <motion.div
-              layout
-              key={skill.name}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ duration: 0.4, delay: index * 0.04 }}
-              whileHover={{ scale: 1.03, y: -4 }}
-              className="group relative rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/10 hover:border-teal-500/40 p-6 shadow-[0_15px_35px_rgba(0,0,0,0.5)] transition-all duration-500 overflow-hidden flex flex-col justify-between"
-            >
-              {/* Dynamic Brand Ambient Back-Glow on hover */}
-              <div
-                className="absolute -inset-2 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ background: `radial-gradient(circle at center, ${skill.glowColor}, transparent 70%)` }}
-              />
-
-              {/* Card Top: Icon & Category Tag */}
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-5">
-                  <div
-                    className="p-3 rounded-2xl bg-slate-900/90 border border-white/10 group-hover:border-white/20 transition-all duration-300 shadow-md group-hover:scale-110"
-                    style={{ color: skill.color }}
-                  >
-                    {skill.icon}
-                  </div>
-
-                  <span className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[10px] font-mono text-slate-400 group-hover:text-teal-300 group-hover:border-teal-500/30 transition-colors">
-                    {skill.version}
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-teal-300 transition-colors">
-                  {skill.name}
-                </h3>
-                
-                <p className="text-xs font-mono text-slate-400 mt-1">
-                  {skill.categoryLabel}
-                </p>
-              </div>
-
-              {/* Card Bottom: Proficiency Line */}
-              <div className="mt-6 pt-4 border-t border-white/5 relative z-10 flex items-center justify-between text-xs font-mono text-slate-400">
-                <div className="flex items-center gap-1.5 text-slate-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-                  <span className="text-[11px]">{skill.level}</span>
-                </div>
-                <CheckCircle2 className="w-3.5 h-3.5 text-teal-400 opacity-60 group-hover:opacity-100 transition-opacity" />
-              </div>
-
-            </motion.div>
+            <Skill3DCard key={skill.name} skill={skill} index={index} />
           ))}
         </AnimatePresence>
       </motion.div>
